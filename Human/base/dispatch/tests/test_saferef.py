@@ -25,7 +25,7 @@ class TestSaferefForFunction(unittest.TestCase):
         self.sources = []
         self.refs = []
         self.closureCount = 0
-        for x in range(self.count):
+        for _ in range(self.count):
             source = self.get_source()
             referant = self.get_referant(source)
             ref = safeRef(referant, self._closure)
@@ -63,9 +63,7 @@ class TestSaferefForFunction(unittest.TestCase):
 
     def testShortCircuit(self):
         """Test that creation short-circuits to reuse existing references"""
-        sd = {}
-        for ref in self.refs:
-            sd[ref] = 1
+        sd = {ref: 1 for ref in self.refs}
         for source in self.sources:
             if hasattr(source, 'x'):
                 # self.assertTrue(sd.has_key(safeRef(source.x)))
