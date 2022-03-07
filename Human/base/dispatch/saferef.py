@@ -22,19 +22,16 @@ def safeRef(target, onDelete=None):
         goes out of scope with the reference object, (either a
         weakref or a BoundMethodWeakref) as argument.
     """
-    if hasattr(target, '__self__'):
-        # raise Exception("Fuck you, classfunc")
-        if target.__self__ is not None:
-            # Turn a bound method into a BoundMethodWeakref instance.
-            # Keep track of these instances for lookup by disconnect().
-            assert hasattr(target,
-                           '__func__'), """safeRef target %r has __self__, but no __func__, don't know how to create reference""" % (
-                target,)
-            reference = get_bound_method_weakref(
+    if hasattr(target, '__self__') and target.__self__ is not None:
+        # Turn a bound method into a BoundMethodWeakref instance.
+        # Keep track of these instances for lookup by disconnect().
+        assert hasattr(target,
+                       '__func__'), """safeRef target %r has __self__, but no __func__, don't know how to create reference""" % (
+            target,)
+        return get_bound_method_weakref(
                 target=target,
                 onDelete=onDelete
             )
-            return reference
     if callable(onDelete):
         return weakref.ref(target, onDelete)
     else:

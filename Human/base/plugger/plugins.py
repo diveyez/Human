@@ -29,7 +29,9 @@ class PluginManager:
         plugins = {}
         for possible in os.listdir(self.plugin_folder):
             location = os.path.join(self.plugin_folder, possible)
-            if os.path.isdir(location) and self.main_module + '.py' in os.listdir(location):
+            if os.path.isdir(location) and f'{self.main_module}.py' in os.listdir(
+                location
+            ):
                 info = imp.find_module(self.main_module, [location])
                 plugins[possible] = {
                     'name': possible,
